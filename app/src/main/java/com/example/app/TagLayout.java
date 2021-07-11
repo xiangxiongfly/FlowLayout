@@ -1,15 +1,23 @@
 package com.example.app;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class TagLayout extends ViewGroup {
-    private final ArrayList<ChildInfo> childrenInfo = new ArrayList<>();
+
+    private int horizontalSpace = dp2px(20);
+    private int verticalSpace = dp2px(16);
+
+    //所有子View
+    private ArrayList<ArrayList<View>> allViewList = new ArrayList<>();
+    //存储每一行高度
+    private ArrayList<Integer> lineHeightList = new ArrayList<>();
+
 
     public TagLayout(Context context) {
         super(context);
@@ -25,66 +33,84 @@ public class TagLayout extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        allViewList.clear();
+        lineHeightList.clear();
+
         //获取父View的模式和尺寸
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+
         //定义TagLayout已使用宽和高空间
         int widthUsed = 0;
         int heightUsed = 0;
+
         //定义单行的宽的已使用空间
         int lineWidthUsed = 0;
+
         //定义单行最大值
         int lineMaxHeight = 0;
+
+        //一行的子View
+        ArrayList<View> lineViews = new ArrayList<>();
 
         int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
             measureChildWithMargins(childView, widthMeasureSpec, 0, heightMeasureSpec, heightUsed);
-            MarginLayoutParams lp = (MarginLayoutParams) childView.getLayoutParams();
 
-            //处理换行逻辑
-            if (widthMode != MeasureSpec.UNSPECIFIED && lineWidthUsed + childView.getMeasuredWidth() + lp.leftMargin + lp.rightMargin > widthSize) {
+            //换行
+            if (widthMode != MeasureSpec.UNSPECIFIED &&
+                    getPaddingLeft() + getPaddingRight() + lineWidthUsed + childView.getMeasuredWidth() + horizontalSpace > widthSize) {
+                allViewList.add(lineViews);
+                lineHeightList.add(lineMaxHeight);
+                lineViews = new ArrayList<>();
+
+                widthUsed = Math.max(widthUsed, lineWidthUsed);
+                heightUsed += lineMaxHeight + verticalSpace;
+
                 lineWidthUsed = 0;
-                heightUsed += lineMaxHeight;
                 lineMaxHeight = 0;
                 measureChildWithMargins(childView, widthMeasureSpec, 0, heightMeasureSpec, heightUsed);
             }
 
-            if (i == childrenInfo.size()) {
-                childrenInfo.add(new ChildInfo());
+            lineViews.add(childView);
+
+            lineWidthUsed += childView.getMeasuredWidth() + horizontalSpace;
+            lineMaxHeight = Math.max(lineMaxHeight, childView.getMeasuredHeight());
+
+            //处理最后一行
+            if (i == childCount - 1) {
+                allViewList.add(lineViews);
+                lineHeightList.add(lineMaxHeight);
+                widthUsed = Math.max(widthUsed, lineWidthUsed);
+                heightUsed += lineMaxHeight;
             }
-
-            //设置子View的宽高 margin值 子View的范围
-            ChildInfo childInfo = childrenInfo.get(i);
-            childInfo.width = childView.getMeasuredWidth();
-            childInfo.height = childView.getMeasuredHeight();
-            childInfo.leftMargin = lp.leftMargin;
-            childInfo.rightMargin = lp.rightMargin;
-            childInfo.topMargin = lp.topMargin;
-            childInfo.bottomMargin = lp.bottomMargin;
-            childInfo.left = lineWidthUsed;
-            childInfo.top = heightUsed;
-            childInfo.right = lineWidthUsed + childInfo.width + childInfo.leftMargin + childInfo.rightMargin;
-            childInfo.bottom = heightUsed + childInfo.height + childInfo.topMargin + childInfo.bottomMargin;
-
-            lineWidthUsed += (childInfo.right - childInfo.left);
-            widthUsed = Math.max(widthUsed, lineWidthUsed);
-            lineMaxHeight = Math.max(lineMaxHeight, childInfo.bottom - childInfo.top);
         }
 
         int selfWidth = widthUsed;
-        int selfHeight = heightUsed + lineMaxHeight;
+        int selfHeight = heightUsed;
         setMeasuredDimension(selfWidth, selfHeight);
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        Iterator<ChildInfo> iterator = childrenInfo.iterator();
-        int index = 0;
-        while (iterator.hasNext()) {
-            ChildInfo itemInfo = iterator.next();
-            getChildAt(index).layout(itemInfo.left + itemInfo.leftMargin, itemInfo.top + itemInfo.topMargin, itemInfo.right - itemInfo.rightMargin, itemInfo.bottom - itemInfo.bottomMargin);
-            index++;
+        int lineCount = allViewList.size();
+        int left = getPaddingLeft();
+        int top = getPaddingTop();
+        for (int i = 0; i < lineCount; i++) {
+            ArrayList<View> lineViewList = allViewList.get(i);
+            for (View childView : lineViewList) {
+                int childLeft = left;
+                int childTop = top;
+                int childRight = childLeft + childView.getMeasuredWidth();
+                int childBottom = childTop + childView.getMeasuredHeight();
+                childView.layout(childLeft, childTop, childRight, childBottom);
+                left = childRight + horizontalSpace;
+            }
+
+            int lineHeight = lineHeightList.get(i);
+            top += lineHeight + verticalSpace;
+            left = getPaddingLeft();
         }
     }
 
@@ -108,12 +134,8 @@ public class TagLayout extends ViewGroup {
         return p instanceof MarginLayoutParams;
     }
 
-    class ChildInfo {
-        //子View的宽高
-        public int width, height;
-        //子view的margin值
-        public int leftMargin, rightMargin, topMargin, bottomMargin;
-        //子View在父View中的布局范围
-        public int left, top, right, bottom;
+    public int dp2px(float dpValue) {
+        float scale = Resources.getSystem().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 }

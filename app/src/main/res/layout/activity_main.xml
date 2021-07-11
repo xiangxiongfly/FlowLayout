@@ -45,5 +45,53 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <com.example.app.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.example.app.TagLayout>
+
+    <com.example.app.TagLayout
+        android:id="@+id/tagLayout2"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp">
+
+        <com.example.app.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.example.app.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </com.example.app.TagLayout>
 </LinearLayout>
