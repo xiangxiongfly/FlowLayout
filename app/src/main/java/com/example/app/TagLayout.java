@@ -87,8 +87,8 @@ public class TagLayout extends ViewGroup {
             }
         }
 
-        int selfWidth = widthUsed;
-        int selfHeight = heightUsed;
+        int selfWidth = widthUsed + getPaddingLeft() + getPaddingRight();
+        int selfHeight = heightUsed + getPaddingTop() + getPaddingBottom();
         setMeasuredDimension(selfWidth, selfHeight);
     }
 
