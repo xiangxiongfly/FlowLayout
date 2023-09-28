@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +13,7 @@
         android:onClick="addTag"
         android:text="添加标签" />
 
-    <com.example.app.TagLayout
+    <com.example.app.FlowLayout
         android:id="@+id/tagLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -58,14 +59,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-    </com.example.app.TagLayout>
+    </com.example.app.FlowLayout>
 
-    <com.example.app.TagLayout
+    <com.example.app.FlowLayout
         android:id="@+id/tagLayout2"
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
-        android:padding="10dp">
+        android:padding="10dp"
+        app:horizontalSpace="5dp"
+        app:verticalSpace="3dp">
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
@@ -95,5 +98,5 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-    </com.example.app.TagLayout>
+    </com.example.app.FlowLayout>
 </LinearLayout>

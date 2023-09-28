@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TagLayout tagLayout;
+    private FlowLayout tagLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
