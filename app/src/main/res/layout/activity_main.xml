@@ -16,47 +16,46 @@
     <com.example.app.FlowLayout
         android:id="@+id/tagLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#666"
+        android:padding="5dp"
+        app:horizontalSpace="5dp"
+        app:verticalSpace="5dp">
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="北京" />
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="上海" />
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="广州" />
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="深圳" />
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="天津" />
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="珠海" />
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.example.app.MyTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.example.app.MyTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.example.app.MyTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="南京" />
 
     </com.example.app.FlowLayout>
 
@@ -64,35 +63,46 @@
         android:id="@+id/tagLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="50dp"
+        android:background="#999"
+        android:padding="10dp"
+        app:horizontalSpace="10dp"
+        app:verticalSpace="10dp">
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="北京" />
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="上海" />
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="广州" />
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="深圳" />
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="天津" />
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="珠海" />
 
         <com.example.app.MyTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="南京" />
 
     </com.example.app.FlowLayout>
 </LinearLayout>

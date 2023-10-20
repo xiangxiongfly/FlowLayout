@@ -1,14 +1,10 @@
 package com.example.app
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Rect
 import android.util.AttributeSet
-import android.util.TypedValue
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
-import java.util.*
 import kotlin.math.max
 
 
@@ -42,13 +38,16 @@ class FlowLayout @JvmOverloads constructor(
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        childrenBounds.clear()
         val widthSize = MeasureSpec.getSize(widthMeasureSpec) //FlowLayout宽度尺寸
         val widthMode = MeasureSpec.getMode(widthMeasureSpec) //FlowLayout宽度模式
-        val horizontalPadding = paddingLeft + paddingRight //FlowLayout水平内边距
-        var widthUsed = 0 //FlowLayout已用宽度
-        var heightUsed = 0 //FlowLayout已用高度
+        var widthUsed = 0  //FlowLayout已用宽度
+        var heightUsed = 0  //FlowLayout已用高度
         var lineWidthUsed = 0 //单行已用宽度
         var lineMaxHeight = 0 //单行最大高度
+
+        lineWidthUsed = paddingLeft //处理padding
+        heightUsed = paddingTop  //处理padding
 
         //遍历子View
         for ((index, childView) in children.withIndex()) {
@@ -58,10 +57,10 @@ class FlowLayout @JvmOverloads constructor(
                 heightMeasureSpec, heightUsed
             )
 
-            //处理换行
-            if (lineWidthUsed + childView.measuredWidth + horizontalPadding > widthSize) {
-                lineWidthUsed = 0
-                heightUsed += lineMaxHeight
+            //处理换行（需要考虑padding和水平间距）
+            if (lineWidthUsed + childView.measuredWidth + paddingRight + mHorizontalSpace > widthSize) {
+                lineWidthUsed = paddingLeft
+                heightUsed += lineMaxHeight + mVerticalSpace
                 lineMaxHeight = 0
                 measureChildWithMargins(
                     childView,
@@ -70,7 +69,7 @@ class FlowLayout @JvmOverloads constructor(
                 )
             }
 
-            //记录子View坐标
+            //计算子View坐标
             val rect = Rect()
             rect.set(
                 lineWidthUsed,
@@ -80,14 +79,20 @@ class FlowLayout @JvmOverloads constructor(
             )
             childrenBounds.add(rect)
 
-            lineWidthUsed += childView.measuredWidth //计算单行已用宽度
+            lineWidthUsed += childView.measuredWidth + mHorizontalSpace //计算单行已用宽度（需要考虑水平间距）
             widthUsed = max(lineWidthUsed, widthUsed) //计算FlowLayout已用高度
             lineMaxHeight = max(lineMaxHeight, childView.measuredHeight) //计算单行最大高度
+
+            //处理最后一行，主要处理padding问题
+            if (index == childCount - 1) {
+                widthUsed += paddingRight
+                heightUsed += paddingBottom
+            }
         }
 
         val selfWidth = widthUsed
         val selfHeight = heightUsed + lineMaxHeight
-        setMeasuredDimension(selfWidth, selfHeight)
+        setMeasuredDimension(widthSize, selfHeight)
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
@@ -97,21 +102,21 @@ class FlowLayout @JvmOverloads constructor(
         }
     }
 
-//    override fun generateDefaultLayoutParams(): LayoutParams {
-//        return MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-//    }
+    override fun generateDefaultLayoutParams(): LayoutParams {
+        return MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+    }
 
-    //使用measureChildWithMargins必须重写
+    //必须重写
     override fun generateLayoutParams(attrs: AttributeSet): LayoutParams {
         return MarginLayoutParams(context, attrs)
     }
 
-    //使用measureChildWithMargins必须重写
+    //必须重写
     override fun generateLayoutParams(p: LayoutParams): LayoutParams {
         return MarginLayoutParams(p)
     }
 
-//    override fun checkLayoutParams(p: LayoutParams): Boolean {
-//        return p is MarginLayoutParams
-//    }
+    override fun checkLayoutParams(p: LayoutParams): Boolean {
+        return p is MarginLayoutParams
+    }
 }

@@ -21,36 +21,8 @@ class MyTextView @JvmOverloads constructor(
         private const val X_PADDING = 32 //水平padding
         private const val Y_PADDING = 16 //垂直padding
         private val TEXTS = arrayOf(
-            "北京",
-            "北京",
-            "广州",
-            "上海",
-            "武汉",
-            "湖北",
-            "成都",
-            "四川",
-            "杭州",
-            "江苏",
-            "苏州",
-            "江苏苏州",
-            "乌鲁木齐",
-            "西藏拉萨",
-            "新疆乌鲁木齐",
-            "北京",
-            "广州",
-            "广东广州",
-            "深圳",
-            "广东深圳",
-            "湖北武汉",
-            "成都",
-            "四川成都",
-            "杭州",
-            "江苏杭州",
-            "苏州",
-            "江苏苏州",
-            "乌鲁木齐",
-            "西藏拉萨",
-            "新疆乌鲁木齐"
+            "北京", "上海", "天津", "深圳", "广州", "南京", "武汉", "乌鲁木齐",
+            "湖北武汉", "湖南长沙", "江苏南京", "浙江杭州", "江西南昌", "山东济南"
         )
         private val COLORS = intArrayOf(
             Color.parseColor("#E91E63"),
@@ -68,10 +40,12 @@ class MyTextView @JvmOverloads constructor(
     private var paint: Paint
 
     init {
-        text = TEXTS[random.nextInt(TEXTS.size)]
-        setTextColor(Color.WHITE)
-        textSize = TEXT_SIZE
-        setPadding(X_PADDING, Y_PADDING, X_PADDING, Y_PADDING)
+        if (text.isEmpty()) {
+            text = TEXTS[random.nextInt(TEXTS.size)] //文字
+        }
+        setTextColor(Color.WHITE) //文字颜色
+        textSize = TEXT_SIZE //字体大小
+        setPadding(X_PADDING, Y_PADDING, X_PADDING, Y_PADDING) //内边距
         paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.color = COLORS[random.nextInt(COLORS.size)]
     }
